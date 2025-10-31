@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Upload Manager</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f7fa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .upload-container {
+        background: white;
+        padding: 30px;
+        width: 400px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    label {
+        display: block;
+        background: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    label:hover {
+        background: #45a049;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        background: #f0f0f0;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background-color: #ddd;
+        border-radius: 5px;
+        margin-top: 5px;
+        overflow: hidden;
+    }
+
+    .progress {
+        width: 0%;
+        height: 100%;
+        background-color: #4CAF50;
+        transition: width 0.3s ease;
+    }
+
+    button {
+        width: 100%;
+        background: #007BFF;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #0069d9;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="upload-container">
+    <h2>File Upload Manager</h2>
+
+    <label for="fileInput">Choose Files</label>
+    <input type="file" id="fileInput" multiple>
+
+    <ul id="fileList"></ul>
+
+    <button id="uploadBtn">Upload Files</button>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+    const uploadBtn = document.getElementById('uploadBtn');
+    let files = [];
+
+    fileInput.addEventListener('change', (event) => {
+        files = Array.from(event.target.files);
+        displayFiles();
+    });
+
+    function displayFiles() {
+        fileList.innerHTML = '';
+        files.forEach(file => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div>
+                    <strong>${file.name}</strong> (${Math.round(file.size / 1024)} KB)
+                    <div class="progress-bar"><div class="progress"></div></div>
+                </div>
+            `;
+            fileList.appendChild(li);
+        });
+    }
+
+    uploadBtn.addEventListener('click', () => {
+        const progressBars = document.querySelectorAll('.progress');
+        progressBars.forEach((bar, index) => {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                bar.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                }
+            }, 200);
+        });
+        alert('Upload simulation complete!');
+    });
+</script>
+
+</body>
+</html>
